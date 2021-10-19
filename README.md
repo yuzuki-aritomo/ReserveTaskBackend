@@ -1,24 +1,22 @@
-# README
+# Rails Api Server
+## 初回 Setup
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+```bash
+$ git clone git@github.com:yuzuki-aritomo/ReserveTaskBackend.git
 
-Things you may want to cover:
+$ cd ReserveTaskBackend
 
-* Ruby version
+$ docker compose build
 
-* System dependencies
+$ docker compose up -d
 
-* Configuration
+$ docker-compose run web rails db:create
 
-* Database creation
+$ docker-compose run web rails db:migrate
+```
 
-* Database initialization
+## docker起動
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```bash
+$ docker compose up -d
+```
