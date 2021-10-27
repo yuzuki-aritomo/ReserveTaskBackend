@@ -113,8 +113,6 @@ paths:
                 date: "2020-09-30T02:21:12+09:00"
                 is_confirm: true
                 is_cancel: false
-        "405":
-          description: "Invalid input"
   /reservation/{reservation_id}:
     get:
       tags:
@@ -154,8 +152,6 @@ paths:
               date: "2020-09-30T02:21:12+09:00"
               is_confirm: true
               is_cancel: false
-        "405":
-          description: "Invalid input"
     post:
       tags:
       - "reservation"
@@ -194,8 +190,6 @@ paths:
               date: "2020-09-30T02:21:12+09:00"
               is_confirm: true
               is_cancel: false
-        "405":
-          description: "Invalid input"
   /reservation/{reservation_id}/cancel:
     post:
       tags:
@@ -235,5 +229,3 @@ paths:
               date: "2020-09-30T02:21:12+09:00"
               is_confirm: true
               is_cancel: true
-        "405":
-          description: "Invalid input"
