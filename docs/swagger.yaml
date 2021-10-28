@@ -173,10 +173,9 @@ components:
         is_cancel:
           type: "boolean"
       example:
-        data:
-        - reservation_id: "00723"
-          fp_name: "taro"
-          user_name: "hanako"
-          date: "2020-09-30T02:21:12+09:00"
-          is_confirm: true
-          is_cancel: false
+        reservation_id: "00723"
+        fp_name: "taro"
+        user_name: "hanako"
+        date: "2020-09-30T02:21:12+09:00"
+        is_confirm: true
+        is_cancel: false
