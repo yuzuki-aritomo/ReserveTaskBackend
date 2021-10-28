@@ -1,7 +1,7 @@
 openapi: "3.0.1"
 info:
   title: "Rails Reservation Api"
-  description: "Api設計です"
+  description: "Reservatin Api Document"
   termsOfService: "http://swagger.io/terms/"
   version: "1.0.0"
 servers:
