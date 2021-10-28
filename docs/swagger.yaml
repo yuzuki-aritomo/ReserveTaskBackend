@@ -50,7 +50,7 @@ paths:
                       type: "object"
                       properties:
                         reservation_id:
-                          type: "string"
+                          type: "int"
                         date:
                           type: "string"
                           format: "date-time"
@@ -148,7 +148,7 @@ paths:
 components:
   schemas:
     reservation_id:
-      type: "string"
+      type: "int"
       example: "1"
     date-time:
       type: "string"
@@ -160,7 +160,7 @@ components:
       - reservation_id
       properties:
         reservation_id:
-          type: "string"
+          type: "int"
         fp_name:
           type: "string"
         user_name:
