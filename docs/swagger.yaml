@@ -148,7 +148,7 @@ paths:
 components:
   schemas:
     reservation_id:
-      type: "int"
+      type: "integer"
       example: "1"
     date-time:
       type: "string"
@@ -160,7 +160,7 @@ components:
       - reservation_id
       properties:
         reservation_id:
-          type: "int"
+          type: "integer"
         fp_name:
           type: "string"
         user_name:
