@@ -10,9 +10,6 @@ servers:
 tags:
 - name: "reservation"
   description: "user予約用"
-  externalDocs:
-    description: "Find out more"
-    url: "http://swagger.io"
 - name: "registration"
   description: "fp予約用"
 - name: "auth"
@@ -47,20 +44,8 @@ paths:
                   data:
                     type: "array"
                     items:
-                      type: "object"
-                      properties:
-                        reservation_id:
-                          type: "int"
-                        date:
-                          type: "string"
-                          format: "date-time"
-                        is_confirm:
-                          type: "boolean"
-                example:
-                  data:
-                  - reservation_id: "00723"
-                    date: "2020-09-30T02:21:12+09:00"
-                    is_confirm: false
+                      $ref: '#/components/schemas/Reservation'
+
   /reservation/decisions:
     get:
       tags:
