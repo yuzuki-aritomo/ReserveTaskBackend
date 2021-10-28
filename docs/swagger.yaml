@@ -20,7 +20,7 @@ tags:
 
 paths:
   #user 予約関連
-  /reservation/opening:
+  /reservation/openings:
     get:
       tags:
       - "reservation"
@@ -61,9 +61,7 @@ paths:
                   - reservation_id: "00723"
                     date: "2020-09-30T02:21:12+09:00"
                     is_confirm: false
-        "405":
-          description: "Invalid input"
-  /reservation/decision:
+  /reservation/decisions:
     get:
       tags:
       - "reservation"
@@ -182,5 +180,3 @@ components:
           date: "2020-09-30T02:21:12+09:00"
           is_confirm: true
           is_cancel: false
-
-
