@@ -27,12 +27,16 @@ paths:
         description: "取得開始日時"
         in: "query"
         schema:
-          $ref: '#/components/schemas/date-time'
+          type: "string"
+          format: "date-time"
+          example: "2020-09-30T02:21:12+09:00"
       - name: "end"
         description: "取得終了日時"
         in: "query"
         schema:
-          $ref: '#/components/schemas/date-time'
+          type: "string"
+          format: "date-time"
+          example: "2020-09-30T02:21:12+09:00"
       responses:
         200:
           description: "Success"
@@ -50,12 +54,16 @@ paths:
         description: "取得開始日時"
         in: "query"
         schema:
-          $ref: '#/components/schemas/date-time'
+          type: "string"
+          format: "date-time"
+          example: "2020-09-30T02:21:12+09:00"
       - name: "end"
         description: "取得終了日時"
         in: "query"
         schema:
-          $ref: '#/components/schemas/date-time'
+          type: "string"
+          format: "date-time"
+          example: "2020-09-30T02:21:12+09:00"
       responses:
         200:
           description: "Success"
@@ -73,7 +81,8 @@ paths:
         in: "path"
         description: "予約id"
         schema:
-          $ref: '#/components/schemas/reservation_id'
+          type: "integer"
+          example: 1
         required: true
       responses:
         200:
@@ -91,7 +100,8 @@ paths:
         in: "path"
         description: "予約id"
         schema:
-          $ref: '#/components/schemas/reservation_id'
+          type: "integer"
+          example: 1
         required: true
       responses:
         200:
@@ -109,7 +119,8 @@ paths:
         in: "path"
         description: "予約id"
         schema:
-          $ref: '#/components/schemas/reservation_id'
+          type: "integer"
+          example: 1
         required: true
       responses:
         200:
@@ -120,13 +131,6 @@ paths:
                 $ref: '#/components/schemas/Reservation'
 components:
   schemas:
-    reservation_id:
-      type: "integer"
-      example: 1
-    date-time:
-      type: "string"
-      format: "date-time"
-      example: "2020-09-30T02:21:12+09:00"
     Reservation:
       type: "object"
       required:
