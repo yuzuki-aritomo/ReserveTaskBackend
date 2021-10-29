@@ -17,18 +17,18 @@ tags:
 
 paths:
   #user 予約関連
-  /reservation/openings:
+  /reservations/openings:
     get:
       tags:
       - "reservation"
       summary: "予約可能一覧取得"
       parameters:
-      - name: "since"
+      - name: "start"
         description: "取得開始日時"
         in: "query"
         schema:
           $ref: '#/components/schemas/date-time'
-      - name: "until"
+      - name: "end"
         description: "取得終了日時"
         in: "query"
         schema:
@@ -45,19 +45,18 @@ paths:
                     type: "array"
                     items:
                       $ref: '#/components/schemas/Reservation'
-
-  /reservation/decisions:
+  /reservations:
     get:
       tags:
       - "reservation"
       summary: "予約完了一覧取得"
       parameters:
-      - name: "since"
+      - name: "start"
         description: "取得開始日時"
         in: "query"
         schema:
           $ref: '#/components/schemas/date-time'
-      - name: "until"
+      - name: "end"
         description: "取得終了日時"
         in: "query"
         schema:
@@ -68,13 +67,13 @@ paths:
           content:
             application/json:
               schema:
-                type: "object"
+              type: "object"
                 properties:
                   data:
                     type: "array"
                     items:
-                      $ref: '#/components/schemas/Reservation'
-  /reservation/{reservation_id}:
+                $ref: '#/components/schemas/Reservation'
+  /reservations/{reservation_id}:
     get:
       tags:
       - "reservation"
@@ -111,7 +110,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Reservation'
-  /reservation/{reservation_id}/cancel:
+  /reservations/{reservation_id}/cancel:
     post:
       tags:
       - "reservation"
@@ -134,7 +133,7 @@ components:
   schemas:
     reservation_id:
       type: "integer"
-      example: "1"
+      example: 1
     date-time:
       type: "string"
       format: "date-time"
@@ -153,14 +152,14 @@ components:
         date:
           type: "string"
           format: "date-time"
-        is_confirm:
+        reserved:
           type: "boolean"
         is_cancel:
           type: "boolean"
       example:
-        reservation_id: "00723"
+        reservation_id: 2
         fp_name: "taro"
         user_name: "hanako"
         date: "2020-09-30T02:21:12+09:00"
-        is_confirm: true
+        reserved: true
         is_cancel: false
