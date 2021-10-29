@@ -39,12 +39,7 @@ paths:
           content:
             application/json:
               schema:
-                type: "object"
-                properties:
-                  data:
-                    type: "array"
-                    items:
-                      $ref: '#/components/schemas/Reservation'
+                $ref: '#/components/schemas/Reservations'
   /reservations:
     get:
       tags:
@@ -67,12 +62,7 @@ paths:
           content:
             application/json:
               schema:
-              type: "object"
-                properties:
-                  data:
-                    type: "array"
-                    items:
-                $ref: '#/components/schemas/Reservation'
+                $ref: '#/components/schemas/Reservations'
   /reservations/{reservation_id}:
     get:
       tags:
@@ -141,7 +131,7 @@ components:
     Reservation:
       type: "object"
       required:
-      - reservation_id
+      - "reservation_id"
       properties:
         reservation_id:
           type: "integer"
@@ -163,3 +153,18 @@ components:
         date: "2020-09-30T02:21:12+09:00"
         reserved: true
         is_cancel: false
+    Reservations:
+      type: "object"
+      properties:
+        data:
+          type: "array"
+          items:
+            $ref: '#/components/schemas/Reservation'
+      example:
+        data:
+        - reservation_id: 2
+          fp_name: "taro"
+          user_name: "hanako"
+          date: "2020-09-30T02:21:12+09:00"
+          reserved: true
+          is_cancel: false
