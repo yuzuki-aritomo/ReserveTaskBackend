@@ -136,8 +136,6 @@ components:
           type: "integer"
         fp_name:
           type: "string"
-        user_name:
-          type: "string"
         date:
           type: "string"
           format: "date-time"
@@ -148,7 +146,6 @@ components:
       example:
         reservation_id: 2
         fp_name: "taro"
-        user_name: "hanako"
         date: "2020-09-30T02:21:12+09:00"
         reserved: true
         is_cancel: false
@@ -163,7 +160,6 @@ components:
         data:
         - reservation_id: 2
           fp_name: "taro"
-          user_name: "hanako"
           date: "2020-09-30T02:21:12+09:00"
           reserved: true
           is_cancel: false
