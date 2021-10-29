@@ -100,8 +100,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Reservation'
-  /reservations/{reservation_id}/cancel:
-    post:
+    delete:
       tags:
       - "reservation"
       summary: "予約キャンセル"
