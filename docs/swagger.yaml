@@ -82,6 +82,7 @@ paths:
         description: "予約id"
         schema:
           type: "integer"
+          format: "int32"
           example: 1
         required: true
       responses:
@@ -101,6 +102,7 @@ paths:
         description: "予約id"
         schema:
           type: "integer"
+          format: "int32"
           example: 1
         required: true
       responses:
@@ -120,6 +122,7 @@ paths:
         description: "予約id"
         schema:
           type: "integer"
+          format: "int32"
           example: 1
         required: true
       responses:
@@ -138,6 +141,7 @@ components:
       properties:
         reservation_id:
           type: "integer"
+          format: "int32"
         fp_name:
           type: "string"
         start:
