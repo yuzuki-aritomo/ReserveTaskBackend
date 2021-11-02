@@ -10,7 +10,7 @@ servers:
 tags:
 - name: "reservation"
   description: "user予約用"
-- name: "registration"
+- name: "reception"
   description: "fp予約用"
 - name: "auth"
   description: "認証処理"
@@ -132,6 +132,81 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Reservation'
+
+  #fp 予約関連
+  /receptions:
+    get:
+      tags:
+      - "reception"
+      summary: "fp予約登録一覧取得"
+      parameters:
+      - name: "start"
+        description: "取得開始日時"
+        in: "query"
+        schema:
+          type: "string"
+          format: "date-time"
+          example: "2020-09-30T02:21:12+09:00"
+      - name: "end"
+        description: "取得終了日時"
+        in: "query"
+        schema:
+          type: "string"
+          format: "date-time"
+          example: "2020-09-30T02:21:12+09:00"
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Receptions'
+    post:
+      tags:
+      - "reception"
+      summary: "fp予約可能日時登録"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                register_date:
+                  type: "array"
+                  items:
+                    type: "string"
+                    format: "date-time"
+            example:
+              register_date:
+              - "2020-09-30T02:21:12+09:00"
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reception'
+  /receptions/{reception_id}:
+    delete:
+      tags:
+      - "reception"
+      summary: "予約削除"
+      parameters:
+      - name: "reception_id"
+        in: "path"
+        description: "予約id"
+        schema:
+          type: "integer"
+          format: "int32"
+          example: 1
+        required: true
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reception'
 components:
   schemas:
     Reservation:
@@ -172,6 +247,48 @@ components:
         data:
         - reservation_id: 2
           fp_name: "taro"
+          start: "2020-09-30T02:00:12+09:00"
+          end: "2020-09-30T02:30:12+09:00"
+          reserved: true
+          canceled: false
+    Reception:
+      type: "object"
+      required:
+      - "reception_id"
+      properties:
+        reception_id:
+          type: "integer"
+          format: "int32"
+        user_name:
+          type: "string"
+        start:
+          type: "string"
+          format: "date-time"
+        end:
+          type: "string"
+          format: "date-time"
+        reserved:
+          type: "boolean"
+        canceled:
+          type: "boolean"
+      example:
+        reception_id: 2
+        user_name: "taro"
+        start: "2020-09-30T02:00:12+09:00"
+        end: "2020-09-30T02:30:12+09:00"
+        reserved: true
+        canceled: false
+    Receptions:
+      type: "object"
+      properties:
+        data:
+          type: "array"
+          items:
+            $ref: '#/components/schemas/Reception'
+      example:
+        data:
+        - reception_id: 2
+          user_name: "taro"
           start: "2020-09-30T02:00:12+09:00"
           end: "2020-09-30T02:30:12+09:00"
           reserved: true
