@@ -5,5 +5,6 @@ class CreateReceptions < ActiveRecord::Migration[6.0]
       t.datetime :date, null: false, index: true
       t.timestamps
     end
+    add_index :receptions, [:user, :date], unique: true
   end
 end
