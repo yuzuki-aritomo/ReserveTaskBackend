@@ -10,6 +10,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 2021_11_05_005515) do
 
+  create_table "receptions", id: :bigint, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "user_id", null: false, unsigned: true
+    t.datetime "date", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["date"], name: "index_receptions_on_date"
+    t.index ["user_id", "date"], name: "index_receptions_on_user_id_and_date", unique: true
+    t.index ["user_id"], name: "index_receptions_on_user_id"
+  end
+
+  create_table "reservations", id: :bigint, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "user_id", null: false, unsigned: true
+    t.bigint "reception_id", null: false, unsigned: true
+    t.boolean "cancel_flag", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["reception_id"], name: "index_reservations_on_reception_id"
+    t.index ["user_id"], name: "index_reservations_on_user_id"
+  end
+
+  create_table "users", id: :bigint, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.string "provider", default: "email", null: false
+    t.string "uid", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.boolean "allow_password_change", default: false
+    t.string "name", null: false
+    t.string "email", null: false
+    t.text "tokens"
+    t.integer "role", limit: 1, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
+  end
+
+  add_foreign_key "receptions", "users"
+  add_foreign_key "reservations", "receptions"
+  add_foreign_key "reservations", "users"
 end
