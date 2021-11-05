@@ -11,7 +11,7 @@ tags:
 - name: "reservation"
   description: "user予約用"
 - name: "reception"
-  description: "fp予約用"
+  description: "fp予約受付"
 - name: "auth"
   description: "認証処理"
 
