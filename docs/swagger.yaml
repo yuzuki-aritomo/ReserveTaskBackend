@@ -5,7 +5,7 @@ info:
   termsOfService: "http://swagger.io/terms/"
   version: "1.0.0"
 servers:
-- url: "https://localhost:3001/api/v1/"
+- url: "https://localhost:3001/"
 
 tags:
 - name: "reservation"
@@ -207,6 +207,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Reception'
+  /auth:
+    post:
+      tags:
+      - "auth"
+      summary: "新規登録"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUpRequest'
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignUpResponse'
+  /auth/sign_in:
+    post:
+      tags:
+      - "auth"
+      summary: "ログイン"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignInRequest'
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignInResponse'
+  /auth/sign_out:
+    post:
+      tags:
+      - "auth"
+      summary: "ログアウト"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignOutRequest'
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignOutResponse'
 components:
   schemas:
     Reservation:
@@ -293,3 +344,111 @@ components:
           end: "2020-09-30T02:30:12+09:00"
           reserved: true
           canceled: false
+    SignUpRequest:
+      type: "object"
+      properties:
+        email:
+          description: "email"
+          type: "string"
+          format: "email"
+        password:
+          description: "password"
+          type: "string"
+          format: "password"
+    SignUpResponse:
+      type: "object"
+      properties:
+        status:
+          type: "string"
+        data:
+          type: "object"
+          properties:
+            uid:
+              type: "string"
+            id:
+              type: "integer"
+              format: "int32"
+            email:
+              type: "string"
+              format: "email"
+            provider:
+              type: "string"
+            allow_password_change:
+              type: "boolean"
+            name:
+              type: "string"
+            created_at:
+              type: "string"
+              format: "date-time"
+            updated_at:
+              type: "string"
+              format: "date-time"
+      example:
+        status: "success"
+        data:
+          uid: "test@gmail.com"
+          id: 1
+          email: "test@gmail.com"
+          provider: "email"
+          allow_password_change: false
+          name: ""
+          created_at: "2020-09-30T02:21:12+09:00"
+          updated_at: "2020-09-30T02:21:12+09:00"
+    SignInRequest:
+      type: "object"
+      properties:
+        email:
+          description: "email"
+          type: "string"
+          format: "email"
+        password:
+          description: "password"
+          type: "string"
+          format: "password"
+    SignInResponse:
+      type: "object"
+      properties:
+        data:
+          type: "object"
+          properties:
+            uid:
+              type: "string"
+            id:
+              type: "integer"
+            email:
+              type: "string"
+              format: "email"
+            provider:
+              type: "string"
+            allow_password_change:
+              type: "boolean"
+            name:
+              type: "string"
+      example:
+        data:
+          uid: "test@gmail.com"
+          id: 1
+          email: "test@gmail.com"
+          provider: "email"
+          allow_password_change: false
+          name: ""
+    SignOutRequest:
+      type: "object"
+      properties:
+        email:
+          description: "email"
+          type: "string"
+          format: "email"
+        access-token:
+          description: "acccess token"
+          type: "string"
+        client:
+          description: "client"
+          type: "string"
+    SignOutResponse:
+      type: "object"
+      properties:
+        success:
+          type: "boolean"
+      example:
+        success: true
