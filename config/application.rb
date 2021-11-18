@@ -40,7 +40,7 @@ module RailsApp
         resource "*",
           headers: :any,
           methods: [:get, :post, :options, :head],
-          expose: ['access-token', 'expiry', 'token-type', 'uid', 'client'],
+          expose: ['access-token', 'expiry', 'token-type', 'uid', 'client']
       end
     end
   end
