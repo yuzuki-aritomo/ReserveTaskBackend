@@ -1,7 +1,9 @@
 class Reception < ApplicationRecord
   belongs_to :user
+
   validates :user_id, presence: true
   validates :date, presence: true
+  validates :user_id, uniqueness: { scope: [ :date ] }
 
   validate :user_check_role
   validate :date_check_in_the_past
