@@ -3,11 +3,19 @@ class Reception < ApplicationRecord
   validates :user_id, presence: true
   validates :date, presence: true
 
-  # validate :date_check_in_the_past
-  # validate :date_check_in_sunday
-  # validate :date_check_in_reception_time
-  # validate :date_check_in_reception_hour
+  validate :date_check_in_the_past
+  validate :date_check_in_sunday
+  validate :date_check_in_reception_time
+  validate :date_check_in_reception_hour
+  validate :user_check_role
 
+  #fp userかチェック
+  def user_check_role
+    @user = User.find(user_id)
+    if !@user.is_FP
+      errors.add(:date, ": FP以外登録できません")
+    end
+  end
   #過去の日付は弾く
   def date_check_in_the_past
     if date.present? && date < Date.today
@@ -23,9 +31,9 @@ class Reception < ApplicationRecord
   #予約可能時間のチェック
   def date_check_in_reception_time
     if date.present?
-      if date.saturday? && (date.min < 11 || 15 <= date.min )
+      if date.saturday? && (date.hour < 11 || 15 <= date.hour )
         errors.add(:date, ": 予約受付時間外は登録できません")
-      elsif (date.min < 10 || 18 <= date.min )
+      elsif (date.hour < 10 || 18 <= date.hour )
         errors.add(:date, ": 予約受付時間外は登録できません")
       end
     end
