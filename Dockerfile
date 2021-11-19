@@ -1,4 +1,4 @@
-FROM ruby:2.6.5
+FROM ruby:3.0.2
 
 # 必要なパッケージのインストール（Rails6からWebpackerがいるので、yarnをインストールする）
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
