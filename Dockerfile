@@ -1,4 +1,4 @@
-FROM ruby:2.6.5
+FROM ruby:3.0.2
 
 # 必要なパッケージのインストール（Rails6からWebpackerがいるので、yarnをインストールする）
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
@@ -7,7 +7,6 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
         && apt-get install -y build-essential libpq-dev nodejs yarn
 
 #timezoneの設定
-RUN apt-get update && apt-get install -y tzdata && apt-get clean && rm -rf /var/lib/apt/lists/*
 ENV TZ Asia/Tokyo
 
 # 作業ディレクトリの作成
