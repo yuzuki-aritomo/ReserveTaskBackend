@@ -1,6 +1,49 @@
 class ReceptionsController < ApplicationController
   before_action :authenticate_user!
 
+  def index
+    def convert_to_date(date)
+      begin
+        return Time.parse(date)
+      rescue
+        return nil
+      end
+    end
+    start_date = convert_to_date(params[:start]) || Time.now.prev_month
+    end_date = convert_to_date(params[:end]) || Time.now.next_month
+    @receptions = Reception.where(user_id: current_user.id).where(date: start_date ... end_date)
+    logger.debug(@receptions)
+    reception_dates = []
+    @receptions.map do | reception |
+      reservations = Reservation.where(reception_id: reception.id)
+      if reservations.present?
+        reservations.map do | reservation |
+          reception_dates.push({
+            "reception_id": reception.id,
+            "user_name": reservation.get_user_name(),
+            "start": reception.date.iso8601,
+            "end": (reception.date + 60*30).iso8601,
+            "reserved": true,
+            "canceled": reservation.cancel_flag
+          })
+        end
+      else
+        reception_dates.push({
+          "reception_id": reception.id,
+          "user_name": "",
+          "start": reception.date.iso8601,
+          "end": (reception.date + 60*30).iso8601,
+          "reserved": false,
+          "canceled": false
+        })
+      end
+    end
+    response = {
+      date: reception_dates
+    }
+    render json: response
+  end
+
   def create
     request_body = JSON.parse(request.body.read, {:symbolize_names => true})
     register_dates = request_body[:register_date]

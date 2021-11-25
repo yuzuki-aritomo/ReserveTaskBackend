@@ -1,4 +1,5 @@
 class Reception < ApplicationRecord
+  has_many :reservation, dependent: :destroy
   belongs_to :user
 
   validates :user_id, presence: true
