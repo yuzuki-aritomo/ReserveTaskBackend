@@ -6,6 +6,9 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
         && apt-get update -qq \
         && apt-get install -y build-essential libpq-dev nodejs yarn
 
+#timezoneの設定
+ENV TZ Asia/Tokyo
+
 # 作業ディレクトリの作成
 RUN mkdir /rails-app
 WORKDIR /rails-app
