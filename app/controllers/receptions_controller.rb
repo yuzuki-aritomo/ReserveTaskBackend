@@ -37,7 +37,7 @@ class ReceptionsController < ApplicationController
     reception_dates = []
     error_dates = []
     register_dates.each do |register_date|
-      @reception = Reception.new(
+      @reception = current_user.reception.build(
         user_id: current_user.id,
         date: register_date,
       )
@@ -48,7 +48,6 @@ class ReceptionsController < ApplicationController
           "start": @reception.date.iso8601,
           "end": (@reception.date + 60*30).iso8601,
           "reserved": false,
-          "canceled": false
         })
       else
         error_dates.push({
