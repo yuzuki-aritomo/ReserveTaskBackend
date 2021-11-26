@@ -11,10 +11,10 @@ class ReceptionsController < ApplicationController
     end
     start_date = convert_to_date(params[:start]) || Time.now.prev_month
     end_date = convert_to_date(params[:end]) || Time.now.next_month
-    @receptions = Reception.where(user_id: current_user.id).where(date: start_date ... end_date)
+    @receptions = current_user.reception.where(date: start_date ... end_date)
     reception_dates = []
     @receptions.map do | reception |
-      @reservation = Reservation.find_by(reception_id: reception.id, cancel_flag: false)
+      @reservation = reception.reservation.find_by(cancel_flag: false)
       reserved = @reservation ? true : false
       user_name = @reservation ? @reservation.get_user_name() : ""
       reception_dates.push({
