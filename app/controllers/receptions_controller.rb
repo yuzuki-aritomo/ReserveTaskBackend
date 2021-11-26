@@ -12,31 +12,18 @@ class ReceptionsController < ApplicationController
     start_date = convert_to_date(params[:start]) || Time.now.prev_month
     end_date = convert_to_date(params[:end]) || Time.now.next_month
     @receptions = Reception.where(user_id: current_user.id).where(date: start_date ... end_date)
-    logger.debug(@receptions)
     reception_dates = []
     @receptions.map do | reception |
-      reservations = Reservation.where(reception_id: reception.id)
-      if reservations.present?
-        reservations.map do | reservation |
-          reception_dates.push({
-            "reception_id": reception.id,
-            "user_name": reservation.get_user_name(),
-            "start": reception.date.iso8601,
-            "end": (reception.date + 60*30).iso8601,
-            "reserved": true,
-            "canceled": reservation.cancel_flag
-          })
-        end
-      else
-        reception_dates.push({
-          "reception_id": reception.id,
-          "user_name": "",
-          "start": reception.date.iso8601,
-          "end": (reception.date + 60*30).iso8601,
-          "reserved": false,
-          "canceled": false
-        })
-      end
+      @reservation = Reservation.find_by(reception_id: reception.id, cancel_flag: false)
+      reserved = @reservation ? true : false
+      user_name = @reservation ? @reservation.get_user_name() : ""
+      reception_dates.push({
+        "reception_id": reception.id,
+        "user_name": user_name,
+        "start": reception.date.iso8601,
+        "end": (reception.date + 60*30).iso8601,
+        "reserved": reserved,
+      })
     end
     response = {
       date: reception_dates
