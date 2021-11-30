@@ -26,7 +26,7 @@ class ReceptionsController < ApplicationController
       })
     end
     response = {
-      date: reception_dates
+      data: reception_dates
     }
     render json: response
   end
