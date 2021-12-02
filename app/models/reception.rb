@@ -49,4 +49,10 @@ class Reception < ApplicationRecord
       end
     end
   end
+
+  def is_reserved
+    @reservation = self.reservation.find_by(cancel_flag: false)
+    return @reservation ? true : false
+  end
+
 end

@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   get "receptions"      => "receptions#index"
   post "receptions"      => "receptions#create"
 
+  get "reservations/openings" => "reservations#openings"
 end
