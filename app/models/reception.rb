@@ -13,8 +13,8 @@ class Reception < ApplicationRecord
 
   #fp userかチェック
   def user_check_role
-    @user = User.find(user_id)
-    if !@user.is_FP
+    user = User.find(user_id)
+    if !user.is_FP
       errors.add(:user, ": Financial Planner以外登録できません")
     end
   end
