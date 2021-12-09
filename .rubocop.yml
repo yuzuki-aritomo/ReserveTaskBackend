@@ -1,0 +1,74 @@
+inherit_from: .rubocop_todo.yml
+
+require:
+  - rubocop-rails
+
+# Rails用に最適化
+Rails:
+  Enabled: true
+
+# 対象外
+AllCops:
+  Exclude:
+    - "vendor/**/*"
+    - "bin/**"
+    - "db/schema.rb"
+    - "node_modules/**/*"
+    - "tmp/**/*"
+    - "lib/**/*"
+  DisplayCopNames: true
+  TargetRubyVersion: 3.0.2
+
+# trueかfalseを設定しないと警告が出る
+Layout/HashEachMethods:
+  Enabled: true
+Layout/HashTransformKeys:
+  Enabled: true
+Layout/HashTransformValues:
+  Enabled: true
+
+##################### Layout ##################################
+
+# 日本語のコメントを許可する
+Layout/AsciiComments:
+  Enabled: false
+
+# ドキュメントの無いpublic classを許可する
+Layout/Documentation:
+  Enabled: false
+
+# !! のイディオムを許可
+Layout/DoubleNegation:
+  Enabled: false
+
+#文字列をfreezeするか
+Layout/FrozenStringLiteralComment:
+  Enabled: false
+
+# selfが無くても良い時に省略するか。model内において、ローカル変数とメソッド呼び出しの区別をつけた方が分かりやすい場合が多い
+Layout/RedundantSelf:
+  Enabled: false
+
+##################### Lint ##################################
+
+##################### Layout ##################################
+
+# 変数の代入(A)、メソッドの呼び出し等(B)、条件分岐(C)から算出される複雑度
+Layout/AbcSize:
+  Max: 30
+
+# 循環的複雑度 ≒ 分岐の数
+Layout/CyclomaticComplexity:
+  Max: 10
+
+# 1行の文字数
+Layout/LineLength:
+  Max: 160
+  Exclude:
+    - "db/migrate/*.rb"
+
+# メソッドの行数
+Layout/MethodLength:
+  Max: 20
+  Exclude:
+    - "db/migrate/*.rb"
