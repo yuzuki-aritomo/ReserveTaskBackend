@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
         :recoverable, :validatable
   include DeviseTokenAuth::Concerns::User
 
-  def is_FP
+  def fp?
     if self.role == 2
       return true
     else
@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def is_User
+  def user?
     if self.role == 1
       return true
     else
