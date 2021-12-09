@@ -186,7 +186,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Reception'
-  /receptions/cancel:
+  /receptions/cancels:
     get:
       tags:
       - "reception"
