@@ -3,7 +3,7 @@
 class User < ActiveRecord::Base
   has_many :reception, dependent: :destroy
   has_many :reservation, dependent: :destroy
-  
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -11,19 +11,10 @@ class User < ActiveRecord::Base
   include DeviseTokenAuth::Concerns::User
 
   def fp?
-    if self.role == 2
-      return true
-    else
-      return false
-    end
+    role == 2
   end
 
   def user?
-    if self.role == 1
-      return true
-    else
-      return false
-    end
+    role == 1
   end
-
 end

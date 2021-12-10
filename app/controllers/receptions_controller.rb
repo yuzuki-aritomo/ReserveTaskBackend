@@ -12,7 +12,7 @@ class ReceptionsController < ApplicationController
           "reception_id": @reception.id,
           "user_name": current_user.name,
           "start": @reception.date.iso8601,
-          "end": (@reception.date + 60*30).iso8601,
+          "end": (@reception.date + 60 * 30).iso8601,
           "reserved": false
         })
       else
@@ -24,7 +24,7 @@ class ReceptionsController < ApplicationController
     end
     response = {
       "data": reception_dates,
-      "error": error_dates,
+      "error": error_dates
     }
     render json: response
   end
