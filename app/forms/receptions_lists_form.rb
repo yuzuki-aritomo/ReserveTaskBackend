@@ -30,9 +30,9 @@ class ReceptionsListsForm
 
   private
 
-  def convert_to_date(date)
-    Time.zone.parse(date)
-  rescue
-    nil
-  end
+    def convert_to_date(date)
+      Time.zone.parse(date)
+    rescue StandardError
+      nil
+    end
 end
