@@ -1,18 +1,14 @@
 class ReceptionsListsForm
   include ActiveModel::Model
 
-  attr_accessor :user
-
-  def initialize(user)
+  def initialize(user, params)
     @user = user
+    @params = params
   end
 
   def execute
-    # start_date = convert_to_date(params[:start]) || Time.now.prev_month
-    # end_date = convert_to_date(params[:end]) || Time.now.next_month
-    start_date = Time.zone.now.prev_month
-    end_date = Time.zone.now.next_month
-
+    start_date = convert_to_date(@params[:start]) || Time.zone.now.prev_month
+    end_date = convert_to_date(@params[:end]) || Time.zone.now.next_month
     @receptions = @user.reception.where(date: start_date...end_date)
     reception_dates = []
     @receptions.map do |reception|

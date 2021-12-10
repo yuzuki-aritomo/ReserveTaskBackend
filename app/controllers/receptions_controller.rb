@@ -3,7 +3,8 @@ class ReceptionsController < ApplicationController
 
   def index
     reception_form = ReceptionsListsForm.new(
-      current_user
+      current_user,
+      params.permit(:start, :end)
     )
     response = reception_form.execute
     render json: response
