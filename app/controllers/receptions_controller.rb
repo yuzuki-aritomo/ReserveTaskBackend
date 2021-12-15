@@ -54,7 +54,7 @@ class ReceptionsController < ApplicationController
   end
 
   def destroy
-    reception_id = params[:id]
+    reception_id = destroy_params
     @reception = current_user.reception.find(reception_id)
     skip_reserved && return
     response = {}
@@ -62,8 +62,8 @@ class ReceptionsController < ApplicationController
       logger.debug(@reception)
       response['reception_id'] = @reception.id
       response['user_name'] = ''
-      response['start'] = @reception.date.iso8601
-      response['end'] = (@reception.date + 60 * 30).iso8601
+      response['start'] = @reception.received_at.iso8601
+      response['end'] = (@reception.received_at + 60 * 30).iso8601
       response['reserved'] = false
     end
     render json: response
@@ -77,6 +77,10 @@ class ReceptionsController < ApplicationController
 
     def create_params
       params.require(:register_date)
+    end
+
+    def destroy_params
+      params.require(:id)
     end
 
     def convert_to_date(date)
