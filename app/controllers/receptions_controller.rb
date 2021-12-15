@@ -2,11 +2,37 @@ class ReceptionsController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    reception_form = ReceptionsRegistrationForm.new(
-      user: current_user,
-      register_dates: params.require(:register_date)
-    )
-    response = reception_form.execute
+    register_dates = create_params
+    success_dates = []
+    error_dates = []
+    register_dates.each do |register_date|
+      reception = current_user.reception.build(date: register_date)
+      if reception.save
+        success_dates.push({
+          "reception_id": reception.id,
+          "user_name": current_user.name,
+          "start": reception.date.iso8601,
+          "end": (reception.date + 60 * 30).iso8601,
+          "reserved": false
+        })
+      else
+        error_dates.push({
+          "date": reception.date,
+          "error_messages": reception.errors.full_messages
+        })
+      end
+    end
+    response = {
+      "data": success_dates,
+      "error": error_dates
+    }
     render json: response
   end
+
+  private
+
+  def create_params
+    params.require(:register_date)
+  end
+
 end
