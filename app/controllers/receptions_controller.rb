@@ -2,11 +2,26 @@ class ReceptionsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    reception_form = ReceptionsListsForm.new(
-      current_user,
-      params.permit(:start, :end)
-    )
-    response = reception_form.execute
+    params = get_params
+    start_date = convert_to_date(params[:start]) || Time.zone.now.prev_month
+    end_date = convert_to_date(params[:end]) || Time.zone.now.next_month
+    receptions = current_user.reception.where(received_at: start_date...end_date)
+    reception_dates = []
+    receptions.map do |reception|
+      reservation = reception.reservation.find_by(cancel_flag: false)
+      reserved = reservation ? true : false
+      user_name = reservation ? reservation.get_user_name : ''
+      reception_dates.push({
+        "reception_id": reception.id,
+        "user_name": user_name,
+        "start": reception.received_at.iso8601,
+        "end": (reception.received_at + 60 * 30).iso8601,
+        "reserved": reserved
+      })
+    end
+    response = {
+      data: reception_dates
+    }
     render json: response
   end
 
@@ -40,7 +55,17 @@ class ReceptionsController < ApplicationController
 
   private
 
+    def get_params
+      params.permit(:start, :end)
+    end
+
     def create_params
       params.require(:register_date)
+    end
+
+    def convert_to_date(date)
+      Time.zone.parse(date)
+    rescue StandardError
+      nil
     end
 end
