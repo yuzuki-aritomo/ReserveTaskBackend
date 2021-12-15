@@ -31,8 +31,7 @@ class ReceptionsController < ApplicationController
 
   private
 
-  def create_params
-    params.require(:register_date)
-  end
-
+    def create_params
+      params.require(:register_date)
+    end
 end
