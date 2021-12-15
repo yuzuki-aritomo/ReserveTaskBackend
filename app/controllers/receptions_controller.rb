@@ -58,13 +58,15 @@ class ReceptionsController < ApplicationController
     @reception = current_user.reception.find(reception_id)
     skip_reserved && return
     response = {}
-    if @reception.destroy!
-      logger.debug(@reception)
+    if @reception.destroy
       response['reception_id'] = @reception.id
       response['user_name'] = ''
       response['start'] = @reception.received_at.iso8601
       response['end'] = (@reception.received_at + 60 * 30).iso8601
       response['reserved'] = false
+    else
+      render_error('エラーが発生しました。')
+      return
     end
     render json: response
   end
@@ -91,12 +93,15 @@ class ReceptionsController < ApplicationController
 
     def skip_reserved
       if @reception.is_reserved
-        error_messages = '予約が完了した予約可能時間は削除できません'
-        render status: :bad_request, json: {
-          status: 400,
-          message: error_messages
-        }
+        render_error('予約が完了した予約可能時間は削除できません')
         true
       end
+    end
+
+    def render_error(error_message)
+      render status: :bad_request, json: {
+        status: 400,
+        message: error_message
+      }
     end
 end
