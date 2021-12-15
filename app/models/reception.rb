@@ -8,35 +8,25 @@ class Reception < ApplicationRecord
   validates :user_id, uniqueness: { scope: [:date] }
 
   validate :validate_fp_user
-  validate :validate_date_in_the_past
-  validate :date_check_in_sunday
-  validate :date_check_in_reception_hour
-  validate :date_check_in_reception_min_sec
+  validate :validate_date
 
   # fp userかチェック
   def validate_fp_user
-    # user = User.find(user_id)
     unless user.fp?
       errors.add(:user, ': Financial Planner以外登録できません')
     end
   end
 
-  # 過去の日付は弾く
-  def date_check_in_the_past
+  def validate_date
+    # 過去の日付は弾く
     if date.present? && date < Date.today
-      errors.add(:date, ': 過去の日付は登録できません')
+      errors.add(:date, ': 過去の日時は登録できません')
     end
-  end
-
-  # 日曜日は弾く
-  def date_check_in_sunday
+    # 日曜日は弾く
     if date.present? && date.sunday?
       errors.add(:date, ': 日曜日は登録できません')
     end
-  end
-
-  # 予約可能時間のチェック
-  def date_check_in_reception_hour
+    # 予約可能時間のチェック
     if date.present?
       if date.saturday? && (date.hour < 11 || 15 <= date.hour)
         errors.add(:date, ': 予約受付時間外は登録できません')
@@ -44,10 +34,7 @@ class Reception < ApplicationRecord
         errors.add(:date, ': 予約受付時間外は登録できません')
       end
     end
-  end
-
-  # 30分単位のみ受付る
-  def date_check_in_reception_min_sec
+    # 30分単位のみ受付る
     if date.present? && (date.sec != 0o0 || !(date.min == 0o0 || date.min == 30))
       errors.add(:date, ': 予約開始時間がずれています')
     end
