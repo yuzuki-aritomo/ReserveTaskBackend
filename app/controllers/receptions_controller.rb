@@ -6,18 +6,18 @@ class ReceptionsController < ApplicationController
     success_dates = []
     error_dates = []
     register_dates.each do |register_date|
-      reception = current_user.reception.build(date: register_date)
+      reception = current_user.reception.build(received_at: register_date)
       if reception.save
         success_dates.push({
           "reception_id": reception.id,
           "user_name": current_user.name,
-          "start": reception.date.iso8601,
-          "end": (reception.date + 60 * 30).iso8601,
+          "start": reception.received_at.iso8601,
+          "end": (reception.received_at + 60 * 30).iso8601,
           "reserved": false
         })
       else
         error_dates.push({
-          "date": reception.date,
+          "date": reception.received_at,
           "error_messages": reception.errors.full_messages
         })
       end
