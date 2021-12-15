@@ -10,7 +10,7 @@ class ReceptionsController < ApplicationController
     receptions.map do |reception|
       reservation = reception.reservation.find_by(cancel_flag: false)
       reserved = reservation ? true : false
-      user_name = reservation ? reservation.get_user_name : ''
+      user_name = reservation ? reservation.user.name : ''
       reception_dates.push({
         "reception_id": reception.id,
         "user_name": user_name,
