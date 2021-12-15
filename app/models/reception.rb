@@ -1,52 +1,43 @@
+# frozen_string_literal: true
+
 class Reception < ApplicationRecord
   has_many :reservation, dependent: :destroy
   belongs_to :user
 
   validates :user_id, presence: true
-  validates :date, presence: true
-  validates :user_id, uniqueness: { scope: [ :date ] }
+  validates :received_at, presence: true
+  validates :user_id, uniqueness: { scope: [:received_at] }
 
-  validate :user_check_role
-  validate :date_check_in_the_past
-  validate :date_check_in_sunday
-  validate :date_check_in_reception_hour
-  validate :date_check_in_reception_min_sec
+  validate :validate_fp_user
+  validate :validate_received_at
 
-  #fp userかチェック
-  def user_check_role
-    @user = User.find(user_id)
-    if !@user.is_FP
-      errors.add(:user, ": Financial Planner以外登録できません")
+  # fp userかチェック
+  def validate_fp_user
+    unless user.fp?
+      errors.add(:user, ': Financial Planner以外登録できません')
     end
   end
-  #過去の日付は弾く
-  def date_check_in_the_past
-    if date.present? && date < Date.today
-      errors.add(:date, ": 過去の日付は登録できません")
+
+  def validate_received_at
+    # 過去の日付は弾く
+    if received_at.present? && received_at < Date.today
+      errors.add(:date, ': 過去の日時は登録できません')
     end
-  end
-  #日曜日は弾く
-  def date_check_in_sunday
-    if date.present? && date.sunday?
-      errors.add(:date, ": 日曜日は登録できません")
+    # 日曜日は弾く
+    if received_at.present? && received_at.sunday?
+      errors.add(:date, ': 日曜日は登録できません')
     end
-  end
-  #予約可能時間のチェック
-  def date_check_in_reception_hour
-    if date.present?
-      if date.saturday? && (date.hour < 11 || 15 <= date.hour )
-        errors.add(:date, ": 予約受付時間外は登録できません")
-      elsif (date.hour < 10 || 18 <= date.hour )
-        errors.add(:date, ": 予約受付時間外は登録できません")
+    # 予約可能時間のチェック
+    if received_at.present?
+      if received_at.saturday? && (received_at.hour < 11 || 15 <= received_at.hour)
+        errors.add(:date, ': 予約受付時間外は登録できません')
+      elsif received_at.hour < 10 || 18 <= received_at.hour
+        errors.add(:date, ': 予約受付時間外は登録できません')
       end
     end
-  end
-  #30分単位のみ受付る
-  def date_check_in_reception_min_sec
-    if date.present?
-      if date.sec != 00 || !(date.min == 00 || date.min == 30)
-        errors.add(:date, ": 予約開始時間がずれています")
-      end
+    # 30分単位のみ受付る
+    if received_at.present? && (received_at.sec != 0o0 || !(received_at.min == 0o0 || received_at.min == 30))
+      errors.add(:date, ': 予約開始時間がずれています')
     end
   end
 
