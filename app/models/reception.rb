@@ -7,15 +7,15 @@ class Reception < ApplicationRecord
   validates :date, presence: true
   validates :user_id, uniqueness: { scope: [:date] }
 
-  validate :user_check_role
-  validate :date_check_in_the_past
+  validate :validate_fp_user
+  validate :validate_date_in_the_past
   validate :date_check_in_sunday
   validate :date_check_in_reception_hour
   validate :date_check_in_reception_min_sec
 
   # fp userかチェック
-  def user_check_role
-    user = User.find(user_id)
+  def validate_fp_user
+    # user = User.find(user_id)
     unless user.fp?
       errors.add(:user, ': Financial Planner以外登録できません')
     end

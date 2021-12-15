@@ -3,8 +3,8 @@ class ReceptionsController < ApplicationController
 
   def create
     reception_form = ReceptionsRegistrationForm.new(
-      current_user,
-      params.require(:register_date)
+      user: current_user,
+      register_dates: params.require(:register_date)
     )
     response = reception_form.execute
     render json: response
