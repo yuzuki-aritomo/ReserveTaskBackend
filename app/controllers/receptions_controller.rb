@@ -53,7 +53,7 @@ class ReceptionsController < ApplicationController
     render json: response
   end
 
-  def delete
+  def destroy
     reception_id = params[:id]
     @reception = current_user.reception.find(reception_id)
     skip_reserved() && return
