@@ -41,8 +41,14 @@ class Reception < ApplicationRecord
     end
   end
 
+<<<<<<< HEAD
   def is_reserved
     reservation = reservation.find_by(cancel_flag: false)
     reservation ? true : false
+=======
+  def reserved?
+    @reservation = reservation.find_by(cancel_flag: false)
+    @reservation ? true : false
+>>>>>>> feature/receptions_delete
   end
 end

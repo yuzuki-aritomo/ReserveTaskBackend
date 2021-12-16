@@ -55,14 +55,14 @@ class ReceptionsController < ApplicationController
 
   def destroy
     reception_id = destroy_params
-    @reception = current_user.reception.find(reception_id)
+    reception = current_user.reception.find(reception_id)
     skip_reserved && return
     response = {}
-    if @reception.destroy
-      response['reception_id'] = @reception.id
+    if reception.destroy
+      response['reception_id'] = reception.id
       response['user_name'] = ''
-      response['start'] = @reception.received_at.iso8601
-      response['end'] = (@reception.received_at + 60 * 30).iso8601
+      response['start'] = reception.received_at.iso8601
+      response['end'] = (reception.received_at + 60 * 30).iso8601
       response['reserved'] = false
     else
       render_error('エラーが発生しました。')
@@ -92,7 +92,7 @@ class ReceptionsController < ApplicationController
     end
 
     def skip_reserved
-      if @reception.is_reserved
+      if reception.reserved?
         render_error('予約が完了した予約可能時間は削除できません')
         true
       end
