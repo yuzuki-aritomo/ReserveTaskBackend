@@ -25,7 +25,7 @@ class ReceptionsController < ApplicationController
       end
     end
     response = {
-      "data": success_dates,
+      "register_dates": success_dates,
       "error": error_dates
     }
     render json: response
