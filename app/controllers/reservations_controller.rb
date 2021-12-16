@@ -21,17 +21,18 @@ class ReservationsController < ApplicationController
   end
 
   def index
+    params = get_params
     start_date = convert_to_date(params[:start]) || Time.zone.now.prev_month
     end_date = convert_to_date(params[:end]) || Time.zone.now.next_month
-    @reservations = current_user.reservation.joins(:reception)
-                                .select('reservations.*, receptions.date')
-                                .where(receptions: { date: start_date...end_date })
+    reservations = current_user.reservation.joins(:reception)
+                                .select('reservations.*, receptions.received_at')
+                                .where(receptions: { received_at: start_date...end_date })
     reservation_dates = []
-    @reservations.map do |reservation|
+    reservations.map do |reservation|
       reservation_dates.push({
         'reservation_id': reservation.id,
-        'start': reservation.date.iso8601,
-        'end': (reservation.date + 60 * 30).iso8601,
+        'start': reservation.received_at.iso8601,
+        'end': (reservation.received_at + 60 * 30).iso8601,
         'canceled': reservation.cancel_flag
       })
     end
@@ -44,6 +45,10 @@ class ReservationsController < ApplicationController
   private
 
     def openings_params
+      params.permit(:start, :end)
+    end
+
+    def get_params
       params.permit(:start, :end)
     end
 

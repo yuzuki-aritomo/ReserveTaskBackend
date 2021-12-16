@@ -85,7 +85,7 @@ class ReceptionsController < ApplicationController
       params.require(:id)
     end
 
-    def convert_to_date(date)
+    def convert_to_date_if_failed_nil(date)
       Time.zone.parse(date)
     rescue StandardError
       nil
