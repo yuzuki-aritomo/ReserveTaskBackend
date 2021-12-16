@@ -39,7 +39,7 @@ class Reception < ApplicationRecord
       end
     end
     # 30分単位のみ受付る
-    if received_at.sec != 0o0 || !(received_at.min == 0o0 || received_at.min == 30)
+    if received_at.sec != 0 || !(received_at.min == 0 || received_at.min == 30)
       errors.add(:date, ': 予約開始時間がずれています')
     end
   end
