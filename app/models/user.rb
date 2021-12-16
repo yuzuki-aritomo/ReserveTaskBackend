@@ -3,27 +3,12 @@
 class User < ActiveRecord::Base
   has_many :reception, dependent: :destroy
   has_many :reservation, dependent: :destroy
-  
+
+  enum role: { customer: 1, fp: 2 }
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
         :recoverable, :validatable
   include DeviseTokenAuth::Concerns::User
-
-  def is_FP
-    if self.role == 2
-      return true
-    else
-      return false
-    end
-  end
-
-  def is_User
-    if self.role == 1
-      return true
-    else
-      return false
-    end
-  end
-
 end
