@@ -36,8 +36,6 @@ Rails/FilePath:
     - 'lib/tasks/dev.rake'
     - 'spec/rails_helper.rb'
 
-Style/FrozenStringLiteralComment:
-  Enabled: false
 
 ## `and return` の形式を利用できるようにします。基本的には、&& と || を使います。
 Style/AndOr:
@@ -182,4 +180,7 @@ Style/RegexpLiteral:
 
 # https://rubocop.readthedocs.io/en/stable/cops_style/#styleslicingwithrange
 Style/SlicingWithRange:
+  Enabled: true
+
+Style/FrozenStringLiteralComment:
   Enabled: true
