@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   has_many :reception, dependent: :destroy
   has_many :reservation, dependent: :destroy
 
