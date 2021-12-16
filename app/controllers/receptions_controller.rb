@@ -5,20 +5,23 @@ class ReceptionsController < ApplicationController
 
   def index
     params = get_params
-    start_date = convert_to_date(params[:start]) || Time.zone.now.prev_month
-    end_date = convert_to_date(params[:end]) || Time.zone.now.next_month
-    receptions = current_user.reception.where(received_at: start_date...end_date)
+    start_date = string_to_datetime_or_nil(params[:start]) || Time.zone.now.prev_month
+    end_date = string_to_datetime_or_nil(params[:end]) || Time.zone.now.next_month
+    relation = current_user
+              .reception
+              .left_joins(:reservation)
+              .left_joins(reservation: :user)
+              .select('receptions.*, reservations.user_id, users.name')
+              .where(receptions: { received_at: start_date...end_date })
+    receptions = relation.where(reservations: { cancel_flag: nil }).or(relation.where(reservations: { cancel_flag: false }))
     reception_dates = []
     receptions.map do |reception|
-      reservation = reception.reservation.find_by(cancel_flag: false)
-      reserved = reservation ? true : false
-      user_name = reservation ? reservation.user.name : ''
       reception_dates.push({
         "reception_id": reception.id,
-        "user_name": user_name,
+        "user_name": reception.user_id ? reception.name : '',
         "start": reception.received_at.iso8601,
         "end": (reception.received_at + 60 * 30).iso8601,
-        "reserved": reserved
+        "reserved": reception.user_id ? true : false
       })
     end
     response = {
