@@ -22,7 +22,7 @@ class ReceptionsController < ApplicationController
       })
     end
     response = {
-      data: reception_dates
+      "reception_dates": reception_dates
     }
     render json: response
   end
@@ -65,8 +65,8 @@ class ReceptionsController < ApplicationController
       params.require(:register_date)
     end
 
-    def convert_to_date(date)
-      Time.zone.parse(date)
+    def string_to_datetime_or_nil(datetime)
+      Time.zone.parse(datetime)
     rescue StandardError
       nil
     end
