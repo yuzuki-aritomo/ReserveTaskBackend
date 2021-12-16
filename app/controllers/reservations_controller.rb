@@ -2,7 +2,7 @@ class ReservationsController < ApplicationController
   before_action :authenticate_user!
 
   def openings
-    params = get_params
+    params = openings_params
     start_date = convert_to_date(params[:start]) || Time.zone.now.prev_month
     end_date = convert_to_date(params[:end]) || Time.zone.now.next_month
     receptions = Reception.where(received_at: start_date...end_date)
@@ -43,7 +43,7 @@ class ReservationsController < ApplicationController
 
   private
 
-    def get_params
+    def openings_params
       params.permit(:start, :end)
     end
 
