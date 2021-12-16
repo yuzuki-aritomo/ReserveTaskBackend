@@ -22,9 +22,9 @@ class ReservationsController < ApplicationController
 
   private
 
-  def get_params
-    params.permit(:start, :end)
-  end
+    def get_params
+      params.permit(:start, :end)
+    end
 
     def convert_to_date(date)
       Time.zone.parse(date)
