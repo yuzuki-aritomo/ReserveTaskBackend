@@ -23,5 +23,4 @@ class ApplicationController < ActionController::API
         message: error_message
       }
     end
-
 end

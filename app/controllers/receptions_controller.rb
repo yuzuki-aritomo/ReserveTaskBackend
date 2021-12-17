@@ -8,11 +8,11 @@ class ReceptionsController < ApplicationController
     start_date = string_to_datetime_or_nil(params[:start]) || Time.zone.now.prev_month
     end_date = string_to_datetime_or_nil(params[:end]) || Time.zone.now.next_month
     relation = current_user
-              .reception
-              .left_joins(:reservation)
-              .left_joins(reservation: :user)
-              .select('receptions.*, reservations.user_id, users.name')
-              .where(receptions: { received_at: start_date...end_date })
+               .reception
+               .left_joins(:reservation)
+               .left_joins(reservation: :user)
+               .select('receptions.*, reservations.user_id, users.name')
+               .where(receptions: { received_at: start_date...end_date })
     receptions = relation.where(reservations: { cancel_flag: nil }).or(relation.where(reservations: { cancel_flag: false }))
     reception_dates = []
     receptions.map do |reception|
@@ -102,5 +102,4 @@ class ReceptionsController < ApplicationController
         true
       end
     end
-
 end
