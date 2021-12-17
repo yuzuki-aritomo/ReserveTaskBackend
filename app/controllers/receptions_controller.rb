@@ -70,7 +70,7 @@ class ReceptionsController < ApplicationController
       response['end'] = (@reception.received_at + 60 * 30).iso8601
       response['reserved'] = false
     else
-      render_error('エラーが発生しました。')
+      render_500('エラーが発生しました。')
       return
     end
     render json: response
@@ -98,15 +98,9 @@ class ReceptionsController < ApplicationController
 
     def skip_reserved
       if @reception.reserved?
-        render_error('予約が完了した予約可能時間は削除できません')
+        render_400('予約が完了した予約可能時間は削除できません')
         true
       end
     end
 
-    def render_error(error_message)
-      render status: :bad_request, json: {
-        status: 400,
-        message: error_message
-      }
-    end
 end
