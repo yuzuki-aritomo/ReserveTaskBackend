@@ -36,6 +36,7 @@ Rails/FilePath:
     - 'lib/tasks/dev.rake'
     - 'spec/rails_helper.rb'
 
+
 ## `and return` の形式を利用できるようにします。基本的には、&& と || を使います。
 Style/AndOr:
   Enabled: false
@@ -77,6 +78,7 @@ Layout/FirstHashElementIndentation:
   Enabled: false
 
 Metrics/AbcSize:
+  Max: 25
   Exclude:
     - 'lib/tasks/dev.rake'
 
@@ -94,7 +96,7 @@ Metrics/ClassLength:
 
 Metrics/MethodLength:
   CountComments: false
-  Max: 15
+  Max: 30
   Exclude:
     - 'lib/tasks/dev.rake'
 
@@ -178,4 +180,7 @@ Style/RegexpLiteral:
 
 # https://rubocop.readthedocs.io/en/stable/cops_style/#styleslicingwithrange
 Style/SlicingWithRange:
+  Enabled: true
+
+Style/FrozenStringLiteralComment:
   Enabled: true
