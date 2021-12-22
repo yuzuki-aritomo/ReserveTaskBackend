@@ -32,7 +32,7 @@ class Reception < ApplicationRecord
     end
     # 予約可能時間のチェック
     if received_at.present?
-      if received_at.hour < 11 || received_at.hour >= 15
+      if received_at.saturday? && (received_at.hour < 11 || received_at.hour >= 15)
         errors.add(:date, ': 予約受付時間外は登録できません')
       elsif received_at.hour < 10 || received_at.hour >= 18
         errors.add(:date, ': 予約受付時間外は登録できません')
