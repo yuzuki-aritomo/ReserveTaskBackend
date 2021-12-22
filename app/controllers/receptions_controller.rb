@@ -90,8 +90,8 @@ class ReceptionsController < ApplicationController
       params.require(:id)
     end
 
-    def string_to_datetime_or_nil(datetime)
-      Time.zone.parse(datetime)
+    def string_to_datetime_or_nil(str)
+      Time.zone.parse(str)
     rescue StandardError
       nil
     end
