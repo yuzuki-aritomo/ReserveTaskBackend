@@ -65,7 +65,7 @@ class ReceptionsController < ApplicationController
     response = {}
     if @reception.destroy
       response['reception_id'] = @reception.id
-      response['cusromer_name'] = ''
+      response['customer_name'] = ''
       response['start'] = @reception.received_at.iso8601
       response['end'] = (@reception.received_at + 60 * 30).iso8601
       response['reserved'] = false
