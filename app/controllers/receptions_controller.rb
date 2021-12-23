@@ -18,7 +18,7 @@ class ReceptionsController < ApplicationController
     receptions.map do |reception|
       reception_dates.push({
         "reception_id": reception.id,
-        "user_name": reception.user_id ? reception.name : '',
+        "customer_name": reception.user_id ? reception.name : '',
         "start": reception.received_at.iso8601,
         "end": (reception.received_at + 60 * 30).iso8601,
         "reserved": reception.user_id ? true : false
@@ -39,7 +39,7 @@ class ReceptionsController < ApplicationController
       if reception.save
         success_dates.push({
           "reception_id": reception.id,
-          "user_name": current_user.name,
+          "customer_name": current_user.name,
           "start": reception.received_at.iso8601,
           "end": (reception.received_at + 60 * 30).iso8601,
           "reserved": false
