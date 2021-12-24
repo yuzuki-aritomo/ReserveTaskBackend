@@ -12,14 +12,12 @@ class ApplicationController < ActionController::API
 
     def render_400(error_message)
       render status: :bad_request, json: {
-        status: 400,
         message: error_message
       }
     end
 
     def render_500(error_message)
       render status: :internal_server_error, json: {
-        status: 500,
         message: error_message
       }
     end

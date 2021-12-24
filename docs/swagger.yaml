@@ -186,6 +186,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Reception'
+  /receptions/cancels:
+    get:
+      tags:
+      - "reception"
+      summary: "予約キャンセル情報"
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Receptions'
   /receptions/{reception_id}:
     delete:
       tags:
@@ -320,15 +332,12 @@ components:
           format: "date-time"
         reserved:
           type: "boolean"
-        canceled:
-          type: "boolean"
       example:
         reception_id: 2
         user_name: "taro"
         start: "2020-09-30T02:00:12+09:00"
         end: "2020-09-30T02:30:12+09:00"
         reserved: true
-        canceled: false
     Receptions:
       type: "object"
       properties:
@@ -343,7 +352,6 @@ components:
           start: "2020-09-30T02:00:12+09:00"
           end: "2020-09-30T02:30:12+09:00"
           reserved: true
-          canceled: false
     SignUpRequest:
       type: "object"
       properties:
