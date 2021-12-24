@@ -60,14 +60,14 @@ class ReceptionsController < ApplicationController
 
   def destroy
     reception_id = destroy_params
-    @reception = current_user.reception.find(reception_id)
-    skip_reserved && return
+    reception = current_user.reception.find(reception_id)
+    render_400_if_reserved(reception) && return
     response = {}
-    if @reception.destroy
-      response['reception_id'] = @reception.id
+    if reception.destroy!
+      response['reception_id'] = reception.id
       response['customer_name'] = ''
-      response['start'] = @reception.received_at.iso8601
-      response['end'] = (@reception.received_at + 60 * 30).iso8601
+      response['start'] = reception.received_at.iso8601
+      response['end'] = (reception.received_at + 60 * 30).iso8601
       response['reserved'] = false
     else
       render_500('エラーが発生しました。')
@@ -96,11 +96,10 @@ class ReceptionsController < ApplicationController
       nil
     end
 
-    def skip_reserved
-      if @reception.reserved?
+    def render_400_if_reserved(reception)
+      if reception.reserved?
         render_400('予約が完了した予約可能時間は削除できません')
         true
       end
     end
-
 end

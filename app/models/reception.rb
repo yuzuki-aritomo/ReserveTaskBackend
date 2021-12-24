@@ -45,7 +45,7 @@ class Reception < ApplicationRecord
   end
 
   def reserved?
-    reservation = self.reservation.find_by(cancel_flag: false)
-    reservation ? true : false
+    reservation.exists?(cancel_flag: false)
   end
+
 end
