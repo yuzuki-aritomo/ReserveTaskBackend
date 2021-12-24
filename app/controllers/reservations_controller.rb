@@ -22,18 +22,19 @@ class ReservationsController < ApplicationController
 
   def index
     params = get_params
-    start_date = convert_to_date(params[:start]) || Time.zone.now.prev_month
-    end_date = convert_to_date(params[:end]) || Time.zone.now.next_month
-    reservations = current_user.reservation.joins(:reception)
-                                .select('reservations.*, receptions.received_at')
-                                .where(receptions: { received_at: start_date...end_date })
+    start_date = string_to_datetime_or_nil(params[:start]) || Time.zone.now.prev_month
+    end_date = string_to_datetime_or_nil(params[:end]) || Time.zone.now.next_month
+    receptions = Reception.includes(reservation: :user)
+              .where('receptions.received_at BETWEEN ? AND ?', start_date, end_date)
+              .where('reservations.user_id': current_user.id)
     reservation_dates = []
-    reservations.map do |reservation|
+    receptions.map do |reception|
       reservation_dates.push({
-        'reservation_id': reservation.id,
-        'start': reservation.received_at.iso8601,
-        'end': (reservation.received_at + 60 * 30).iso8601,
-        'canceled': reservation.cancel_flag
+        'reservation_id': reception.reservation.first.id,
+        'fp_name': reception.user.name,
+        'start': reception.received_at.iso8601,
+        'end': (reception.received_at + 60 * 30).iso8601,
+        'canceled': reception.reservation.first.cancel_flag
       })
     end
     response = {
@@ -51,7 +52,7 @@ class ReservationsController < ApplicationController
     def get_params
       params.permit(:start, :end)
     end
-    
+
     def string_to_datetime_or_nil(str)
       Time.zone.parse(str)
     rescue StandardError
