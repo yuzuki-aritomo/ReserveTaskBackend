@@ -43,6 +43,26 @@ class ReservationsController < ApplicationController
     render json: response
   end
 
+  def create
+    params = create_params
+    reception = Reception.find(params[:reception_id])
+    reservation = reception.reservation.build(user_id: current_user.id)
+    response = {}
+    if reservation.save
+      response = {
+        'reservatin_id': reservation.id,
+        'fp_name': reception.user.name,
+        'reserved': true,
+        'start': reception.received_at.iso8601,
+        'end': (reception.received_at + 60 * 30).iso8601
+      }
+    else
+      render_400(reservation.errors.full_messages)
+      return
+    end
+    render json: response
+  end
+
   private
 
     def openings_params
@@ -51,6 +71,10 @@ class ReservationsController < ApplicationController
 
     def get_params
       params.permit(:start, :end)
+    end
+
+    def create_params
+      params.permit(:reception_id)
     end
 
     def string_to_datetime_or_nil(str)
