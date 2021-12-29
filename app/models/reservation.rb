@@ -4,16 +4,12 @@ class Reservation < ApplicationRecord
   belongs_to :user
   belongs_to :reception
 
-  validate :validate_customer_user
-  validate :validate_reserved
+  validate :validate_create, on: :create
 
-  def validate_customer_user
+  def validate_create
     unless user.customer?
       errors.add(:user, ': Customer以外予約できません')
     end
-  end
-
-  def validate_reserved
     if reception.reserved?
       errors.add(:reservation, ': 予約済みのため予約できません')
     end
