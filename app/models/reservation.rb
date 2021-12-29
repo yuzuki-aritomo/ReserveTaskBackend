@@ -18,4 +18,10 @@ class Reservation < ApplicationRecord
       errors.add(:reservation, ': 予約済みのため予約できません')
     end
   end
+
+  def can_cancel?(user_id)
+    if (reception.user.user_id != user_id)&&(reservation.user.user_id != user_id)
+      errors.add(:reservation, ': キャンセル権限がありません')
+    end
+  end
 end

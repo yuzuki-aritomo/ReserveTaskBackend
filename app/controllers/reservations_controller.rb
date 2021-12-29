@@ -63,6 +63,25 @@ class ReservationsController < ApplicationController
     render json: response
   end
 
+  def destroy
+    params = destroy_params
+    reservation = Reservation.find(params[:id])
+    response = {}
+    if reservation.update(cancel_flag: true)
+      response = {
+        'reservatin_id': reservation.id,
+        'fp_name': reception.user.name,
+        'reserved': true,
+        'start': reception.received_at.iso8601,
+        'end': (reception.received_at + 60 * 30).iso8601
+      }
+    else
+      render_400(reservation.errors.full_messages)
+      return
+    end
+    render josn: response
+  end
+
   private
 
     def openings_params
@@ -75,6 +94,10 @@ class ReservationsController < ApplicationController
 
     def create_params
       params.permit(:reception_id)
+    end
+
+    def destroy_params
+      params.permit(:id)
     end
 
     def string_to_datetime_or_nil(str)
