@@ -67,13 +67,15 @@ class ReservationsController < ApplicationController
     params = destroy_params
     reservation = Reservation.find(params[:id])
     response = {}
-    if reservation.update(cancel_flag: true)
+    reservation.current_user = current_user
+    if reservation.valid? && reservation.update(cancel_flag: true)
       response = {
         'reservatin_id': reservation.id,
-        'fp_name': reception.user.name,
+        'fp_name': reservation.reception.user.name,
+        'customer_name': reservation.user.name,
         'reserved': true,
-        'start': reception.received_at.iso8601,
-        'end': (reception.received_at + 60 * 30).iso8601
+        'start': reservation.reception.received_at.iso8601,
+        'end': (reservation.reception.received_at + 60 * 30).iso8601
       }
     else
       render_400(reservation.errors.full_messages)

@@ -1,26 +1,24 @@
 # frozen_string_literal: true
 
 class Reservation < ApplicationRecord
+  attr_accessor :current_user
   belongs_to :user
   belongs_to :reception
 
-  validate :validate_customer_user
-  validate :validate_reserved
+  validate :validate_create, on: :create
+  validate :validate_update, on: :update
 
-  def validate_customer_user
+  def validate_create
     unless user.customer?
       errors.add(:user, ': Customer以外予約できません')
     end
-  end
-
-  def validate_reserved
     if reception.reserved?
       errors.add(:reservation, ': 予約済みのため予約できません')
     end
   end
 
-  def can_cancel?(user_id)
-    if (reception.user.user_id != user_id)&&(reservation.user.user_id != user_id)
+  def validate_update
+    if ((reception.user.id != current_user.id)&&(user.id != current_user.id))
       errors.add(:reservation, ': キャンセル権限がありません')
     end
   end
