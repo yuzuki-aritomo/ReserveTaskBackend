@@ -2,6 +2,7 @@
 
 class Reservation < ApplicationRecord
   attr_accessor :current_user
+
   belongs_to :user
   belongs_to :reception
 
@@ -18,7 +19,7 @@ class Reservation < ApplicationRecord
   end
 
   def validate_update
-    if ((reception.user.id != current_user.id)&&(user.id != current_user.id))
+    if (reception.user.id != current_user.id) && (user.id != current_user.id)
       errors.add(:reservation, ': キャンセル権限がありません')
     end
   end
