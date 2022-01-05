@@ -69,6 +69,8 @@ class ReceptionsController < ApplicationController
       response['reserved'] = false
     end
     render json: response
+  rescue ActiveRecord::RecordNotFound
+    render_400('既に削除されています')
   rescue StandardError => e
     render_500(e)
   end
