@@ -82,6 +82,10 @@ class ReservationsController < ApplicationController
       return
     end
     render josn: response
+  rescue ActiveRecord::RecordNotFound
+    render_400('予約が存在しません')
+  rescue StandardError => e
+    render_500(e)
   end
 
   private
