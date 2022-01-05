@@ -58,7 +58,8 @@ class ReceptionsController < ApplicationController
   def destroy
     reception_id = destroy_params
     reception = current_user.reception.find(reception_id)
-    render_400_if_reserved(reception) && return
+    return if render_400_if_reserved(reception)
+
     response = {}
     if reception.destroy!
       response['reception_id'] = reception.id
@@ -68,6 +69,8 @@ class ReceptionsController < ApplicationController
       response['reserved'] = false
     end
     render json: response
+  rescue ActiveRecord::RecordNotFound
+    render_400('既に削除されています')
   rescue StandardError => e
     render_500(e)
   end
