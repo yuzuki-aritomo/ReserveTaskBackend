@@ -43,4 +43,9 @@ class Reception < ApplicationRecord
       errors.add(:date, ': 予約開始時間がずれています')
     end
   end
+
+  def reserved?
+    reservation.exists?(cancel_flag: false)
+  end
+
 end

@@ -55,6 +55,26 @@ class ReceptionsController < ApplicationController
     render json: response
   end
 
+  def destroy
+    reception_id = destroy_params
+    reception = current_user.reception.find(reception_id)
+    return if render_400_if_reserved(reception)
+
+    response = {}
+    if reception.destroy!
+      response['reception_id'] = reception.id
+      response['customer_name'] = ''
+      response['start'] = reception.received_at.iso8601
+      response['end'] = (reception.received_at + 60 * 30).iso8601
+      response['reserved'] = false
+    end
+    render json: response
+  rescue ActiveRecord::RecordNotFound
+    render_400('既に削除されています')
+  rescue StandardError => e
+    render_500(e)
+  end
+
   private
 
     def get_params
@@ -65,9 +85,20 @@ class ReceptionsController < ApplicationController
       params.require(:register_date)
     end
 
+    def destroy_params
+      params.require(:id)
+    end
+
     def string_to_datetime_or_nil(str)
       Time.zone.parse(str)
     rescue StandardError
       nil
+    end
+
+    def render_400_if_reserved(reception)
+      if reception.reserved?
+        render_400('予約が完了した予約可能時間は削除できません')
+        true
+      end
     end
 end
