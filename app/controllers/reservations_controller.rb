@@ -5,7 +5,7 @@ class ReservationsController < ApplicationController
     params = openings_params
     start_date = string_to_datetime_or_nil(params[:start]) || Time.zone.now.prev_month
     end_date = string_to_datetime_or_nil(params[:end]) || Time.zone.now.next_month
-    reserved_relation = Reservation.select(:reception_id).where(cancel_flag: false).distinct
+    reserved_relation = Reservation.where(cancel_flag: false).distinct.pluck(:reception_id)
     receptions = Reception.where(received_at: start_date...end_date).where.not(id: reserved_relation)
     response = []
     receptions.map do |reception|
