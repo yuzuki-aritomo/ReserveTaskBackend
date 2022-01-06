@@ -17,7 +17,7 @@ class ReservationsController < ApplicationController
         "reserved": false
       })
     end
-    render json: response
+    render json: { 'reception_dates': response }
   end
 
   def index
