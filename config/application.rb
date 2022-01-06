@@ -36,7 +36,7 @@ module RailsApp
         origins "*"
         resource "*",
           headers: :any,
-          methods: [:get, :post, :options, :head],
+          methods: [:get, :post, :options, :head, :delete],
           expose: ['access-token', 'expiry', 'token-type', 'uid', 'client']
       end
     end
