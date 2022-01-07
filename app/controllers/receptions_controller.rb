@@ -14,7 +14,7 @@ class ReceptionsController < ApplicationController
     reception_dates = []
     receptions.map do |reception|
       reception_dates.push({
-        "reception_id": reception.id,
+        "reception_id": reception.reservation.first ? reception.reservation.first.id : reception.id,
         "customer_name": reception.reservation.first ? reception.reservation.first.user.name : '',
         "start": reception.received_at.iso8601,
         "end": (reception.received_at + 60 * 30).iso8601,

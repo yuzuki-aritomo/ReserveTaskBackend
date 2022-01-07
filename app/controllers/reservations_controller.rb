@@ -17,7 +17,7 @@ class ReservationsController < ApplicationController
         "reserved": false
       })
     end
-    render json: response
+    render json: { 'reception_dates': response }
   end
 
   def index
@@ -27,6 +27,7 @@ class ReservationsController < ApplicationController
     receptions = Reception.includes(reservation: :user)
               .where('receptions.received_at BETWEEN ? AND ?', start_date, end_date)
               .where('reservations.user_id': current_user.id)
+              .where('reservations.cancel_flag': false)
     reservation_dates = []
     receptions.map do |reception|
       reservation_dates.push({
@@ -34,7 +35,7 @@ class ReservationsController < ApplicationController
         'fp_name': reception.user.name,
         'start': reception.received_at.iso8601,
         'end': (reception.received_at + 60 * 30).iso8601,
-        'canceled': reception.reservation.first.cancel_flag
+        'reserved': true
       })
     end
     response = {
