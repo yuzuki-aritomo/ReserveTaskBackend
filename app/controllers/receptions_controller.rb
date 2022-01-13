@@ -10,10 +10,19 @@ class ReceptionsController < ApplicationController
     relation = Reception.includes(reservation: :user)
             .where('receptions.user_id': current_user.id)
             .where("receptions.received_at BETWEEN ? AND ?", start_date, end_date)
-    receptions = relation.where("reservations.cancel_flag": true).where.not("reservations.cancel_flag": false).distinct
-            .or(relation.where("reservations.cancel_flag": [nil, false]).distinct)
+    receptons_relation = relation.where("reservations.cancel_flag": [nil, false])
+    canceled_receptions = relation.where("reservations.cancel_flag": true)
+    receptions = {}
+    receptons_relation.map do |reception|
+      receptions[reception.id] = reception
+    end
+    canceled_receptions.map do |reception|
+      unless receptions.has_key?(reception.id)
+        receptions[reception.id] = reception
+      end
+    end
     reception_dates = []
-    receptions.map do |reception|
+    receptions.each do |key, reception|
       reception_dates.push({
         "reception_id": reception.reservation.first&.cancel_flag == false ? reception.reservation.first.id : reception.id,
         "customer_name": reception.reservation.first ? reception.reservation.first.user.name : '',
