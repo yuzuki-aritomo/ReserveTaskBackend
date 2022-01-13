@@ -47,8 +47,11 @@ test:
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
+# production:
+#   <<: *default
+#   database: rails_app_production
+#   username: rails_app
+#   password: <%= ENV['RAILS_APP_DATABASE_PASSWORD'] %>
+
 production:
-  <<: *default
-  database: rails_app_production
-  username: rails_app
-  password: <%= ENV['RAILS_APP_DATABASE_PASSWORD'] %>
+  url: postgres://dbncmbkbevctju:4e97ce568a160092712f0feff2ddb97e8f8212b388dc0c65d763cd98a808f5fe@ec2-35-168-73-79.compute-1.amazonaws.com:5432/d45dojthu4n9kq

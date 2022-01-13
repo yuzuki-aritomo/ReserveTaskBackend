@@ -3,8 +3,8 @@ class ReservationsController < ApplicationController
 
   def openings
     params = openings_params
-    start_date = string_to_datetime_or_nil(params[:start]) || Time.zone.now.prev_month
-    end_date = string_to_datetime_or_nil(params[:end]) || Time.zone.now.next_month
+    start_date = string_to_datetime_or_nil(params[:start]) || Time.zone.now.ago(6.month)
+    end_date = string_to_datetime_or_nil(params[:end]) || Time.zone.now.since(6.month)
     reservation_Ids = Reservation.where(cancel_flag: false).distinct.pluck(:reception_id)
     receptions = Reception.where(received_at: start_date...end_date).where.not(id: reservation_Ids)
     response = []

@@ -5,20 +5,30 @@ class ReceptionsController < ApplicationController
 
   def index
     params = get_params
-    start_date = string_to_datetime_or_nil(params[:start]) || Time.zone.now.prev_month
-    end_date = string_to_datetime_or_nil(params[:end]) || Time.zone.now.next_month
-    receptions = Reception.includes(reservation: :user)
+    start_date = string_to_datetime_or_nil(params[:start]) || Time.zone.now.ago(6.month)
+    end_date = string_to_datetime_or_nil(params[:end]) || Time.zone.now.since(6.month)
+    relation = Reception.includes(reservation: :user)
             .where('receptions.user_id': current_user.id)
             .where("receptions.received_at BETWEEN ? AND ?", start_date, end_date)
-            .where("reservations.cancel_flag": [nil, false])
+    receptons_relation = relation.where("reservations.cancel_flag": [nil, false])
+    canceled_receptions = relation.where("reservations.cancel_flag": true)
+    receptions = {}
+    receptons_relation.map do |reception|
+      receptions[reception.id] = reception
+    end
+    canceled_receptions.map do |reception|
+      unless receptions.has_key?(reception.id)
+        receptions[reception.id] = reception
+      end
+    end
     reception_dates = []
-    receptions.map do |reception|
+    receptions.each do |key, reception|
       reception_dates.push({
-        "reception_id": reception.reservation.first ? reception.reservation.first.id : reception.id,
+        "reception_id": reception.reservation.first&.cancel_flag == false ? reception.reservation.first.id : reception.id,
         "customer_name": reception.reservation.first ? reception.reservation.first.user.name : '',
         "start": reception.received_at.iso8601,
         "end": (reception.received_at + 60 * 30).iso8601,
-        "reserved": reception.reservation.first ? true : false
+        "reserved": reception.reservation.first&.cancel_flag == false
       })
     end
     response = {
