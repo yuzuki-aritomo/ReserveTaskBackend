@@ -5,8 +5,8 @@ class ReceptionsController < ApplicationController
 
   def index
     params = get_params
-    start_date = string_to_datetime_or_nil(params[:start]) || Time.zone.now.prev_month
-    end_date = string_to_datetime_or_nil(params[:end]) || Time.zone.now.next_month
+    start_date = string_to_datetime_or_nil(params[:start]) || Time.zone.now.ago(6.month)
+    end_date = string_to_datetime_or_nil(params[:end]) || Time.zone.now.since(6.month)
     relation = Reception.includes(reservation: :user)
             .where('receptions.user_id': current_user.id)
             .where("receptions.received_at BETWEEN ? AND ?", start_date, end_date)
